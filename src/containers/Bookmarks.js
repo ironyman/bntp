@@ -1,10 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Seq } from 'immutable';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import { toggleFolderCollapse } from '../actions';
 
-import { TileFolder, TileFolderItem } from '../components/Tile';
+import { TileFolder } from '../components/Tile';
+import BookmarkItem from '../components/BookmarkItem';
 
 import { FolderPreference } from '../models';
 
@@ -24,9 +27,7 @@ class Bookmarks extends React.Component {
                       collapsed={folderPreference.isCollapse(folder)}
                       onToggle={collapsed => dispatch(toggleFolderCollapse(folder))}>
             {folder.bookmarks.map(bookmark =>
-              <TileFolderItem key={bookmark.id} link={bookmark.link}>
-                {bookmark.title}
-              </TileFolderItem>
+              <BookmarkItem key={bookmark.id} bookmark={bookmark} />
             )}
           </TileFolder>
         )}
@@ -39,4 +40,4 @@ const mapStateToProps = state => ({
   folderPreference: state.folderPreference,
 });
 
-export default connect(mapStateToProps)(Bookmarks);
+export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(Bookmarks));
