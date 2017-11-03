@@ -1,5 +1,11 @@
 import { Record } from 'immutable';
 
+function domainName(url) {
+  var a = document.createElement('a');
+  a.href = url;
+  return a.hostname;
+}
+
 export default class Bookmark extends Record({
   id: null,
   title: null,
@@ -10,11 +16,13 @@ export default class Bookmark extends Record({
   canEditUrl = true
 
   constructor(record) {
+    const url = domainName(record.url);
     super({
       ...record,
-      icon: `chrome://favicon/${record.url}`,
+      icon: `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`,
     });
   }
+
 
   merge(map) {
     return new Bookmark(super.merge(map).toJS());
