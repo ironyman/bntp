@@ -32,7 +32,7 @@ class FolderItemContainer extends React.Component {
         url={item.url}
         icon={item.icon}
         badge={preference.accessKey}
-        canEdit={true}
+        canEdit={false}
         onLinkClick={e => openLinkIfSpecialLink(item)}
         onEditClick={e => dispatch(actionCreators.open(item, preference))}>
         {item.title}
