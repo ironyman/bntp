@@ -14,7 +14,13 @@ export default class BookmarkRepository {
   static flatten(arrayOfBookmarkTreeNodes) {
     function traverse(node, depth = 0) {
       const folderNodes = Seq(node.children).filter(child => child.url === undefined);
-      const bookmarkNodes = Seq(node.children).filter(child => child.url !== undefined);
+      let bookmarkNodes = Seq(node.children).filter(child => child.url !== undefined);
+
+      // Ignore special bookmarks, that behave weirdly and separators.
+      bookmarkNodes = bookmarkNodes.filter(child => !child.url.match(/^place:/));
+      bookmarkNodes = bookmarkNodes.filter(child => child.type !== 'separator');
+
+      console.log(node.children);
       if (bookmarkNodes.isEmpty()) {
         return folderNodes.flatMap(child => traverse(child, depth));
       } else {
