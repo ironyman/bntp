@@ -5,7 +5,7 @@ import { openLink } from '../../infrastructure/LinkOpener';
 import * as actionTypes from './actionTypes';
 
 import BookmarkRepository from '../../repositories/BookmarkRepository';
-import ChromeAppRepository from '../../repositories/ChromeAppRepository';
+// import ChromeAppRepository from '../../repositories/ChromeAppRepository';
 import TopSiteRepository from '../../repositories/TopSiteRepository';
 import DemoDataRepository from '../../repositories/DemoDataRepository';
 import FolderPreferenceRepository from '../../repositories/FolderPreferenceRepository';
@@ -20,14 +20,14 @@ function* subscribeBookmarkFolders() {
   }
 }
 
-function* subscribeChromeAppFolders() {
-  const chromeAppRepository = new ChromeAppRepository();
-  while (true) {
-    const chromeAppFolders = yield chromeAppRepository.findFolders();
-    yield put({type: actionTypes.RECEIVE_CHROME_APPS, chromeAppFolders});
-    yield chromeAppRepository.poll();
-  }
-}
+// function* subscribeChromeAppFolders() {
+//   const chromeAppRepository = new ChromeAppRepository();
+//   while (true) {
+//     const chromeAppFolders = yield chromeAppRepository.findFolders();
+//     yield put({type: actionTypes.RECEIVE_CHROME_APPS, chromeAppFolders});
+//     yield chromeAppRepository.poll();
+//   }
+// }
 
 function* subscribeTopSites() {
   const topSiteRepository = new TopSiteRepository();
@@ -141,7 +141,7 @@ function* toggleAllFolders({collapsed}) {
 export default function* () {
   if (sessionStorage.getItem('demo') === null) {
     yield fork(subscribeBookmarkFolders);
-    yield fork(subscribeChromeAppFolders);
+    // yield fork(subscribeChromeAppFolders);
     yield fork(subscribeTopSites);
   } else {
     yield fork(fetchDemoData);
